@@ -1,0 +1,67 @@
+# PERMISSIONS:
+#
+# krazybungee.staffchat.write                   Staffchat write
+# krazybungee.staffchat.see                     Staffchat see
+# krazybungee.trialstaffchat.write              Trialstaffchat write
+# krazybungee.trialstaffchat.see                Trialstafftaffchat see
+# krazybungee.staffconnectstatus.gain           Send status connection about this player
+# krazybungee.staffconnectstatus.notification   See connection statuses
+# krazybungee.admin                             Reload plugin
+
+# FEATURES
+staffchat:
+  enabled: true
+# Without slash symbol
+  command: "staffchat"
+  aliases: ["ac","sc"]
+#   Placeholders:
+#   {player} - player who sent message
+#   {message} - message content
+#   {server} - server message
+  format: "&#64e386&lSC&#64e386 - {player} &8&l» &#64e386{message}"
+  bypass servers:
+    - "Auth"
+
+trialstaffchat:
+  enabled: true
+  command: "trialstaffchat"
+  aliases: ["tac","tsc"]
+  #   Placeholders:
+  #   {player} - player who sent message
+  #   {message} - message content
+  #   {server} - server message
+  format: "&#47a18d&lTSC&#47a18d - {player} &8&l» &#47a18d{message}"
+  bypass servers:
+    - "Auth"
+
+staff connect status:
+  enabled: true
+  #   {player} - player who sent message
+  #   {from} - server name from you connect
+  #   {to} - server name you are connecting to
+  bungeecord connect: "&#64e386&l{player} &#64e386just connected to &f{to}&#64e386!"
+  server change: "&#64e386&l{player} &#64e386switched server &f{from} &8&l» &f{to}&#64e386!"
+  bungeecord disconnect: "&#64e386&l{player} &#64e386disconnected from server &f{from}&#64e386!"
+  send yourself status: false
+  #   Blacklist messaging to all of these servers
+  bypass servers:
+    - "Auth"
+
+private bungee message:
+  enabled: true
+  command: "bungeemessage"
+  aliases: ["bmsg"]
+  #   {sender} - player who sent message
+  #   {receiver} - player who receive message
+  #   {message} - message
+  sender message: "&#64e386BMSG &f{sender} &7⇒ &7you &8&l» &#64e386{message}"
+  receiver message: "&#64e386BMSG &f{sender} &7⇒ &7you &8&l» &#64e386{message}"
+  bypass servers:
+    - "Auth"
+
+
+language:
+  staffchat:
+    no message: "&cYou didn't provide message to send through staffchat!"
+  trialstaffchat:
+    no message: "&cYou didn't provide message to send through staffchat!"
