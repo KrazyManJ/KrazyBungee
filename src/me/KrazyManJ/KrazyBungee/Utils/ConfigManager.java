@@ -7,7 +7,9 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.*;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class ConfigManager {
     private static File configContainer;
@@ -32,6 +34,7 @@ public class ConfigManager {
         return configData.getStringList(path);
     }
     public static boolean getBoolean(String path) { return configData.getBoolean(path);}
+    public static Collection<String> getKeys(String path) {return configData.getSection(path).getKeys();}
 
 }
 

@@ -59,6 +59,33 @@ private bungee message:
   bypass servers:
     - "Auth"
 
+tab:
+  enabled: true
+  tab header:
+    - ""
+    - "&#64e386&lKrazyBungee"
+    - ""
+  tab footer:
+    - ""
+    - "&7&oMake your tab go kraaaazyyyyy..."
+    - ""
+
+redirect server commands:
+  enabled: false
+  commands:
+    lol:
+# Example of redirect command:
+#
+#    lobby:                     => Command, that could be registered
+#      permission: ""           => Permission to see/execute command
+#      aliases: ["hub","lob"]   => Aliases for commands
+#      server: "Lobby"          => Server for redirect
+#      message: ""              => Message sent when you redirect
+#      denymessage: ""          => Message sent when you are on same server
+#      clear chat before message: false
+
+
+
 
 language:
   staffchat:

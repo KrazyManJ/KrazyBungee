@@ -1,6 +1,5 @@
 package me.KrazyManJ.KrazyBungee.Commands;
 
-import me.KrazyManJ.KrazyBungee.Main;
 import me.KrazyManJ.KrazyBungee.Utils.ConfigManager;
 import me.KrazyManJ.KrazyBungee.Utils.Format;
 import me.KrazyManJ.KrazyBungee.Utils.ProxyUtils;

@@ -4,12 +4,13 @@ import me.KrazyManJ.KrazyBungee.Main;
 import me.KrazyManJ.KrazyBungee.Utils.ConfigManager;
 import me.KrazyManJ.KrazyBungee.Utils.Format;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
 import java.io.IOException;
 import java.util.logging.Level;
+
+import static me.KrazyManJ.KrazyBungee.Main.log;
 
 public class ReloadCommand extends Command {
     public ReloadCommand() {
@@ -21,11 +22,11 @@ public class ReloadCommand extends Command {
         try {
             ConfigManager.createConfig();
             Main.reload();
-            if (commandSender instanceof ProxiedPlayer player)
-                player.sendMessage(Format.toBaseComponent("Plugin was successfully reloaded!"));
-            ProxyServer.getInstance().getLogger().log(Level.INFO, "Plugin was successfully reloaded!");
+            if (commandSender instanceof ProxiedPlayer player) player.sendMessage(Format.toBaseComponent("Plugin was successfully reloaded!"));
+            log(Level.INFO, "Plugin was successfully reloaded!");
         } catch (IOException e) {
             e.printStackTrace();
+            if (commandSender instanceof ProxiedPlayer player) player.sendMessage(Format.toBaseComponent("&cThere was problem with reloading!"));
         }
     }
 }

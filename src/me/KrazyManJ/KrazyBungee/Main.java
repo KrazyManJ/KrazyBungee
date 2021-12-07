@@ -1,17 +1,16 @@
 package me.KrazyManJ.KrazyBungee;
 
-import me.KrazyManJ.KrazyBungee.Commands.PrivateBungeeMessageCommand;
-import me.KrazyManJ.KrazyBungee.Commands.StaffChatCommand;
-import me.KrazyManJ.KrazyBungee.Commands.ReloadCommand;
-import me.KrazyManJ.KrazyBungee.Commands.TrialStaffChatCommand;
-import me.KrazyManJ.KrazyBungee.Listeners.ProxyDisconnect;
-import me.KrazyManJ.KrazyBungee.Listeners.SwitchServer;
-import me.KrazyManJ.KrazyBungee.Listeners.TabComplete;
+import me.KrazyManJ.KrazyBungee.Commands.*;
+import me.KrazyManJ.KrazyBungee.Listeners.*;
 import me.KrazyManJ.KrazyBungee.Utils.ConfigManager;
+import me.KrazyManJ.KrazyBungee.Utils.ProxyUtils;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.logging.Level;
 
 public class Main extends Plugin {
     private static ProxyServer proxy;
@@ -52,7 +51,37 @@ public class Main extends Plugin {
             proxy.getPluginManager().registerListener(instance, new ProxyDisconnect());
         }
 
+        if (ConfigManager.getBoolean("redirect server commands.enabled")
+                && ConfigManager.getKeys("redirect server commands.commands").size() != 0){
+            Collection<String> commands = ConfigManager.getKeys("redirect server commands.commands");
+            for (String command : commands){
+                Collection<String> commandDetails = ConfigManager.getKeys("redirect server commands.commands."+command);
+                if (commandDetails.contains("permission") && commandDetails.contains("aliases") && commandDetails.contains("server")
+                        && commandDetails.contains("message") && commandDetails.contains("denymessage")
+                        && commandDetails.contains("clear chat before message")){
+                    String[] aliases = ConfigManager.getList("redirect server commands.commands."+command+".permission").toArray(new String[0]);
+                    proxy.getPluginManager().registerCommand(instance, new SlashServerCommands(command,
+                            ConfigManager.getString("redirect server commands.commands."+command+".permission"),
+                            ConfigManager.getString("redirect server commands.commands."+command+".server"),
+                            ConfigManager.getString("redirect server commands.commands."+command+".message"),
+                            ConfigManager.getString("redirect server commands.commands."+command+".denymessage"),
+                            ConfigManager.getBoolean("redirect server commands.commands."+command+".clear chat before message"),
+                            aliases));
+                }
+                else log(Level.WARNING, "There was some error with registering command \""+command+"\"! Canceling registration!");
+            }
+
+        }
+
         proxy.getPluginManager().registerListener(instance, new TabComplete());
+        //proxy.getPluginManager().registerListener(instance, new ProxyPing());
+        //proxy.getPluginManager().registerListener(instance, new ProxyLogin());
+
+        if (ConfigManager.getBoolean("tab.enabled")) for (ProxiedPlayer player : proxy.getPlayers()) {
+            player.resetTabHeader();
+            ProxyUtils.enableTab(player);
+        }
+
     }
 
 
@@ -62,4 +91,7 @@ public class Main extends Plugin {
         proxy.getPluginManager().unregisterCommands(this);
     }
     public static Main getInstance(){ return instance; }
+    public static void log(Level level, String text){
+        proxy.getLogger().log(level, text);
+    }
 }

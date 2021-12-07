@@ -45,5 +45,6 @@ public class SwitchServer implements Listener {
                 }
             }
         }
+        if (ConfigManager.getBoolean("tab.enabled")) ProxyUtils.enableTab(event.getPlayer());
     }
 }
