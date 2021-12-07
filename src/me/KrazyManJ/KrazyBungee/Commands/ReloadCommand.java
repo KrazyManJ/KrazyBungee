@@ -13,7 +13,7 @@ import java.util.logging.Level;
 
 public class ReloadCommand extends Command {
     public ReloadCommand() {
-        super("krazybungeestaffutils", "krazybungeestaffutils.admin", "kbsu");
+        super("krazybungees", "krazybungee.admin", "kb");
     }
 
     @Override
@@ -21,8 +21,8 @@ public class ReloadCommand extends Command {
         try {
             ConfigManager.createConfig();
             Main.reload();
-            if (commandSender instanceof ProxiedPlayer)
-                ((ProxiedPlayer)commandSender).sendMessage(Format.toBaseComponent("Plugin was successfully reloaded!"));
+            if (commandSender instanceof ProxiedPlayer player)
+                player.sendMessage(Format.toBaseComponent("Plugin was successfully reloaded!"));
             ProxyServer.getInstance().getLogger().log(Level.INFO, "Plugin was successfully reloaded!");
         } catch (IOException e) {
             e.printStackTrace();

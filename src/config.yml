@@ -54,8 +54,8 @@ private bungee message:
   #   {sender} - player who sent message
   #   {receiver} - player who receive message
   #   {message} - message
-  sender message: "&#64e386BMSG &f{sender} &7⇒ &7you &8&l» &#64e386{message}"
-  receiver message: "&#64e386BMSG &f{sender} &7⇒ &7you &8&l» &#64e386{message}"
+  sender format: "&#64e386BMSG &fyou &7⇒ &f{receiver} &8&l» &#64e386{message}"
+  receiver format: "&#64e386BMSG &f{sender} &7⇒ &fyou &8&l» &#64e386{message}"
   bypass servers:
     - "Auth"
 

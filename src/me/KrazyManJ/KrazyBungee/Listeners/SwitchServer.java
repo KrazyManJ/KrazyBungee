@@ -14,7 +14,7 @@ import java.util.List;
 public class SwitchServer implements Listener {
     @EventHandler
     public void on(ServerSwitchEvent event){
-        if (event.getPlayer().hasPermission("krazybungeestaffutils.staffconnectstatus.gain")) {
+        if (event.getPlayer().hasPermission("krazybungee.staffconnectstatus.gain")) {
             //Just connecting
             if (event.getFrom() == null) {
                 String connectMsg = ConfigManager.getString("staff connect status.bungeecord connect")
@@ -24,7 +24,7 @@ public class SwitchServer implements Listener {
                     if (!ConfigManager.getBoolean("staff connect status.send yourself status") && !player.equals(event.getPlayer())) {
                         List<String> bypass = ConfigManager.getList("staff connect status.bypass servers");
                         if (bypass.size() == 0 || !bypass.contains(player.getServer().getInfo().getName())) {
-                            ProxyUtils.sendPermission(player, "krazybungeestaffutils.staffconnectstatus.notification", Format.toBaseComponent(connectMsg));
+                            ProxyUtils.sendPermission(player, "krazybungee.staffconnectstatus.notification", Format.toBaseComponent(connectMsg));
                         }
                     }
                 }
@@ -39,7 +39,7 @@ public class SwitchServer implements Listener {
                 for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
                     if (!ConfigManager.getBoolean("staff connect status.send yourself status") && !player.equals(event.getPlayer())) {
                         if (bypass.size() == 0 || !bypass.contains(player.getServer().getInfo().getName())) {
-                            ProxyUtils.sendPermission(player, "krazybungeestafutils.staffconnectstatus.notification", Format.toBaseComponent(switchMsg));
+                            ProxyUtils.sendPermission(player, "krazybungee.staffconnectstatus.notification", Format.toBaseComponent(switchMsg));
                         }
                     }
                 }

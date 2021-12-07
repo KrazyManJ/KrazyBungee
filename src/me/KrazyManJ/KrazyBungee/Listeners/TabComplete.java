@@ -14,10 +14,15 @@ public class TabComplete implements Listener {
     @EventHandler
     public void on(TabCompleteEvent event){
         if (event.getCursor().startsWith("/"+"bmsg ")){
-            List<String> suggestions = new ArrayList<>();
-            for (ProxiedPlayer player : Main.getInstance().getProxy().getPlayers()) suggestions.add(player.getName());
-            event.getSuggestions().clear();
-            event.getSuggestions().addAll(suggestions);
+            long count = event.getCursor().chars().filter(ch -> ch == ' ').count();
+            if (count >= 2) event.setCancelled(true);
+            else {
+                List<String> suggestions = new ArrayList<>();
+                for (ProxiedPlayer player : Main.getInstance().getProxy().getPlayers())
+                    suggestions.add(player.getName());
+                event.getSuggestions().clear();
+                event.getSuggestions().addAll(suggestions);
+            }
         }
         else{
             for (String alias : ConfigManager.getList("staffchat.aliases")){

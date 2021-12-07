@@ -14,14 +14,14 @@ import java.util.List;
 public class ProxyDisconnect implements Listener {
     @EventHandler
     public void on(PlayerDisconnectEvent event){
-        if (event.getPlayer().hasPermission("krazybungeestafutils.staffconnectstatus.gain")){
+        if (event.getPlayer().hasPermission("krazybungee.staffconnectstatus.gain")){
             String disconnectMsg = ConfigManager.getString("staff connect status.bungeecord disconnect")
                     .replace("{player}", event.getPlayer().getName())
                     .replace("{from}", event.getPlayer().getServer().getInfo().getName());
             List<String> bypass = ConfigManager.getList("staff connect status.bypass servers");
             for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
                 if (bypass.size() == 0 || !bypass.contains(event.getPlayer().getServer().getInfo().getName())){
-                    ProxyUtils.sendPermission(player, "krazybungeestaffutils.staffconnectstatus.notification", Format.toBaseComponent(disconnectMsg));
+                    ProxyUtils.sendPermission(player, "krazybungee.staffconnectstatus.notification", Format.toBaseComponent(disconnectMsg));
                 }
             }
         }

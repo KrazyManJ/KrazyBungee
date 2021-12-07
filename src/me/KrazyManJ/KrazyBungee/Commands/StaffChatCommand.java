@@ -12,11 +12,9 @@ import net.md_5.bungee.api.plugin.Command;
 import java.util.List;
 
 public class StaffChatCommand extends Command {
-    private static Command command;
 
     public StaffChatCommand(String command, String[] aliases) {
-        super(command,"krazybungeestaffutils.staffchat.write", aliases);
-        StaffChatCommand.command = this;
+        super(command,"krazybungee.staffchat.write", aliases);
     }
     @Override
     public void execute(CommandSender commandSender, String[] strings) {
@@ -30,14 +28,11 @@ public class StaffChatCommand extends Command {
                 List<String> bypass = ConfigManager.getList("staffchat.bypass servers");
                 for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()){
                     if (bypass.size() == 0 || !bypass.contains(player.getServer().getInfo().getName())){
-                        ProxyUtils.sendPermission(player, "krazybungeestaffutils.staffchat.see", Format.toBaseComponent(staffmsg));
+                        ProxyUtils.sendPermission(player, "krazybungee.staffchat.see", Format.toBaseComponent(staffmsg));
                     }
                 }
             }
             else commandSender.sendMessage(Format.toBaseComponent(ConfigManager.getString("language.staffchat.no message")));
         }
-    }
-    public static void unregister(){
-        if (command != null) Main.getInstance().getProxy().getPluginManager().unregisterCommand(command);
     }
 }

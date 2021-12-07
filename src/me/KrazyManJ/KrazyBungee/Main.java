@@ -21,17 +21,16 @@ public class Main extends Plugin {
         instance = this;
         proxy = getProxy();
         try { ConfigManager.createConfig(); } catch (IOException e) { e.printStackTrace(); }
-        getProxy().getPluginManager().registerCommand(this, new ReloadCommand());
+
         reload();
         super.onEnable();
     }
 
     public static void reload(){
         proxy.getPluginManager().unregisterListeners(instance);
+        proxy.getPluginManager().unregisterCommands(instance);
 
-        StaffChatCommand.unregister();
-        TrialStaffChatCommand.unregister();
-        PrivateBungeeMessageCommand.unregister();
+        proxy.getPluginManager().registerCommand(instance, new ReloadCommand());
 
         if (ConfigManager.getBoolean("staffchat.enabled")) {
             String[] aliases = ConfigManager.getList("staffchat.aliases").toArray(new String[0]);
