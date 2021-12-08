@@ -17,7 +17,7 @@ Adding all features below, helps to manage your network as god.
 - [ ] Bungeecord MOTD 
 - [ ] Maintenance
 - [ ] Custom text commands
-- [ ] Hover/Click components
+- [ ] Hover/Click components (Hover text, suggest)
 
 
-## Documentation comming after first release!
+## Documentation comming after first release! Stay tuned!
