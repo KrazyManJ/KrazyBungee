@@ -11,11 +11,13 @@ Adding all features below, helps to manage your network as god.
 - [x] Private bungeecord messages
 - [x] Sending (dis/-)connection statuses (when staff connects bungeecord,switch server,disconnects)
 - [x] Custom Bungee TAB (header/footer)
-- [x] Creating re-direct commands (like /lobby,/hub,...)
+- [x] Creating re-direct commands (like /lobby,/hub,...) 
   
 
 - [ ] Bungeecord MOTD 
 - [ ] Maintenance
+- [ ] Custom text commands
+- [ ] Hover/Click components
 
 
 ## Documentation comming after first release!
