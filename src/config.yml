@@ -84,6 +84,47 @@ redirect server commands:
 #      denymessage: ""          => Message sent when you are on same server
 #      clear chat before message: false
 
+motd:
+  enabled: true
+  #Multiple motds, it will pick random one to show
+  motd:
+    - ""
+    - ""
+  custom player text:
+    enabled: false
+    text: ""
+  player hover message:
+    enabled: false
+    text:
+      - ""
+      - ""
+      - ""
+      - ""
+
+maintenance:
+  # This enables feature of turning on maintenance, it won't turn on maintenance
+  enabled: false
+  broadcast change: true
+  kick message:
+    - ""
+    - ""
+    - ""
+  motd:
+    enabled: true
+    #Multiple motds, it will pick random one to show
+    motd:
+      - ""
+      - ""
+    custom player text:
+      enabled: false
+      text: ""
+    player hover message:
+      enabled: false
+      text:
+        - ""
+        - ""
+        - ""
+        - ""
 
 
 
@@ -92,3 +133,9 @@ language:
     no message: "&cYou didn't provide message to send through staffchat!"
   trialstaffchat:
     no message: "&cYou didn't provide message to send through staffchat!"
+  maintenance:
+    broadcast on: "&cMaintenance was deactivated!"
+    broadcast off: "&cMaintenance was activated!"
+    already on: "&cMaintenance is already on!"
+    already off: "&cMaintenance is already off!"
+  not enabled: "&cThis feature is not enabled on this server!"

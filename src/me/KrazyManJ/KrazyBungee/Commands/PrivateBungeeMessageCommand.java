@@ -15,12 +15,13 @@ import java.util.List;
 public class PrivateBungeeMessageCommand extends Command {
 
     public PrivateBungeeMessageCommand(String command, String[] aliases){
-        super(command,"",aliases);
+        super(command,"krazybungee.privatemessage",aliases);
     }
     @Override
     public void execute(CommandSender commandSender, String[] strings) {
         if (commandSender instanceof ProxiedPlayer sender){
             if (strings.length >= 2){
+
                 List<String> args = new LinkedList<>(Arrays.stream(strings).toList());
                 ProxiedPlayer receiver = Main.getInstance().getProxy().getPlayer(args.remove(0));
                 String message = String.join(" ", args);

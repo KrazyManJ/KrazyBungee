@@ -1,14 +1,18 @@
 package me.KrazyManJ.KrazyBungee;
 
 import me.KrazyManJ.KrazyBungee.Commands.*;
+import me.KrazyManJ.KrazyBungee.Core.Maintenance;
 import me.KrazyManJ.KrazyBungee.Listeners.*;
+import me.KrazyManJ.KrazyBungee.Listeners.Luckperms.*;
 import me.KrazyManJ.KrazyBungee.Utils.ConfigManager;
+import me.KrazyManJ.KrazyBungee.Utils.DataManager;
 import me.KrazyManJ.KrazyBungee.Utils.ProxyUtils;
+import net.luckperms.api.LuckPermsProvider;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.Collection;
 import java.util.logging.Level;
 
@@ -19,8 +23,8 @@ public class Main extends Plugin {
     public void onEnable() {
         instance = this;
         proxy = getProxy();
+        DataManager.readData();
         try { ConfigManager.createConfig(); } catch (IOException e) { e.printStackTrace(); }
-
         reload();
         super.onEnable();
     }
@@ -28,9 +32,10 @@ public class Main extends Plugin {
     public static void reload(){
         proxy.getPluginManager().unregisterListeners(instance);
         proxy.getPluginManager().unregisterCommands(instance);
+        proxy.getPluginManager().registerCommand(instance, new CoreCommand());
+        proxy.getPluginManager().registerListener(instance, new TabComplete());
 
-        proxy.getPluginManager().registerCommand(instance, new ReloadCommand());
-
+        //COMMANDS
         if (ConfigManager.getBoolean("staffchat.enabled")) {
             String[] aliases = ConfigManager.getList("staffchat.aliases").toArray(new String[0]);
             proxy.getPluginManager().registerCommand(instance, new StaffChatCommand(ConfigManager.getString("staffchat.command"),aliases));
@@ -46,13 +51,7 @@ public class Main extends Plugin {
             proxy.getPluginManager().registerCommand(instance, new PrivateBungeeMessageCommand(ConfigManager.getString("private bungee message.command"),aliasesT));
         }
 
-        if (ConfigManager.getBoolean("staff connect status.enabled")){
-            proxy.getPluginManager().registerListener(instance, new SwitchServer());
-            proxy.getPluginManager().registerListener(instance, new ProxyDisconnect());
-        }
-
-        if (ConfigManager.getBoolean("redirect server commands.enabled")
-                && ConfigManager.getKeys("redirect server commands.commands").size() != 0){
+        if (ConfigManager.getBoolean("redirect server commands.enabled") && ConfigManager.getKeys("redirect server commands.commands").size() != 0){
             Collection<String> commands = ConfigManager.getKeys("redirect server commands.commands");
             for (String command : commands){
                 Collection<String> commandDetails = ConfigManager.getKeys("redirect server commands.commands."+command);
@@ -70,18 +69,32 @@ public class Main extends Plugin {
                 }
                 else log(Level.WARNING, "There was some error with registering command \""+command+"\"! Canceling registration!");
             }
-
         }
 
-        proxy.getPluginManager().registerListener(instance, new TabComplete());
-        //proxy.getPluginManager().registerListener(instance, new ProxyPing());
-        //proxy.getPluginManager().registerListener(instance, new ProxyLogin());
+        //LISTENERS
+        if (ConfigManager.getBoolean("staff connect status.enabled")){
+            proxy.getPluginManager().registerListener(instance, new SwitchServer());
+            proxy.getPluginManager().registerListener(instance, new ProxyDisconnect());
+        }
+
+        if(ConfigManager.getBoolean("motd.enabled")){
+            proxy.getPluginManager().registerListener(instance, new ProxyPing());
+        }
+
+        if(ConfigManager.getBoolean("maintenance.enabled")){
+            Maintenance.setMaintenance((boolean)DataManager.getBoolean("maintenance"), false);
+            proxy.getPluginManager().registerListener(instance, new ProxyLogin());
+            if (proxy.getPluginManager().getPlugin("LuckPerms") != null){
+                new PermissionCalculate(instance, LuckPermsProvider.get());
+                log(Level.INFO,"Successfully hooked to Luckperms API through Maintenance!");
+            }
+        }
+        else if (Maintenance.isMaintenance()) Maintenance.setMaintenance(false, false);
 
         if (ConfigManager.getBoolean("tab.enabled")) for (ProxiedPlayer player : proxy.getPlayers()) {
             player.resetTabHeader();
             ProxyUtils.enableTab(player);
         }
-
     }
 
 
@@ -89,9 +102,10 @@ public class Main extends Plugin {
     public void onDisable() {
         proxy.getPluginManager().unregisterListeners(this);
         proxy.getPluginManager().unregisterCommands(this);
+        DataManager.saveData();
     }
     public static Main getInstance(){ return instance; }
     public static void log(Level level, String text){
-        proxy.getLogger().log(level, text);
+        instance.getLogger().log(level, text);
     }
 }

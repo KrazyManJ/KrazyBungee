@@ -29,6 +29,13 @@ public class ConfigManager {
         OutputStream out = new FileOutputStream(file);
         ByteStreams.copy(in, out);
     }
+    private static void writeConfig(){
+        try {
+            ConfigurationProvider.getProvider(YamlConfiguration.class).save(configData,configContainer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public static String getString(String path) { return configData.getString(path); }
     public static List<String> getList(String path){
         return configData.getStringList(path);

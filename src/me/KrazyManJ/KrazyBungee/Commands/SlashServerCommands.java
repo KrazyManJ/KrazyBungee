@@ -26,9 +26,9 @@ public class SlashServerCommands extends Command {
     public void execute(CommandSender commandSender, String[] strings) {
         if (commandSender instanceof ProxiedPlayer player){
             if (!player.getServer().getInfo().equals(server)){
+                if (clear) for (int i = 0; i < 100; i++) player.sendMessage(new TextComponent(""));
                 player.sendMessage(Format.toBaseComponent(message));
                 player.connect(server);
-                if (clear) for (int i = 0; i < 100; i++) player.sendMessage(new TextComponent(""));
             }
             else{
                 player.sendMessage(Format.toBaseComponent(denymessage));
