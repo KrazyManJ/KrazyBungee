@@ -1,8 +1,9 @@
 package me.KrazyManJ.KrazyBungee.Utils;
 
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.hover.content.Content;
+import net.md_5.bungee.api.chat.hover.content.Text;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -24,5 +25,16 @@ public class Format {
             r.addExtra(C);
         }
         return r;
+    }
+    public static BaseComponent makeLinkButton(String buttonText, String hoverText, String link){
+        BaseComponent result = toBaseComponent(buttonText);
+        result.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(String.valueOf(toBaseComponent(hoverText)))));
+        result.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link));
+        return result;
+    }
+    public static BaseComponent makeHoverText(String buttonText, String hoverText){
+        BaseComponent result = toBaseComponent(buttonText);
+        result.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(String.valueOf(toBaseComponent(hoverText)))));
+        return result;
     }
 }

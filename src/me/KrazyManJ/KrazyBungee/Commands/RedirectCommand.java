@@ -8,13 +8,13 @@ import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-public class SlashServerCommands extends Command {
+public class RedirectCommand extends Command {
     private final ServerInfo server;
     private final boolean clear;
     private final String message;
     private final String denymessage;
 
-    public SlashServerCommands(String name, String permission, String server, String message, String denymessage,boolean clear, String[] aliases) {
+    public RedirectCommand(String name, String permission, String server, String message, String denymessage, boolean clear, String[] aliases) {
         super(name, permission, aliases);
         this.server = Main.getInstance().getProxy().getServerInfo(server);
         this.message = message;

@@ -126,7 +126,9 @@ maintenance:
         - ""
         - ""
 
-
+message commands:
+  enabled: true
+  commands:
 
 language:
   staffchat:

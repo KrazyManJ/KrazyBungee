@@ -20,8 +20,8 @@ public class Maintenance {
         maintenance = value;
         DataManager.setBoolean("maintenance", value);
         if (broadcast){
-            String message = value ? ConfigManager.getString("language.maintenance.broadcast off") :
-                    ConfigManager.getString("language.maintenance.broadcast on");
+            String message = value ? ConfigManager.getString("language.maintenance.broadcast on") :
+                    ConfigManager.getString("language.maintenance.broadcast off");
             Main.getInstance().getProxy().broadcast(Format.toBaseComponent(message));
         }
     }

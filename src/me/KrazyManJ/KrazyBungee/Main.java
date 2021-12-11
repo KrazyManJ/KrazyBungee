@@ -13,8 +13,11 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main extends Plugin {
     private static ProxyServer proxy;
@@ -59,7 +62,7 @@ public class Main extends Plugin {
                         && commandDetails.contains("message") && commandDetails.contains("denymessage")
                         && commandDetails.contains("clear chat before message")){
                     String[] aliases = ConfigManager.getList("redirect server commands.commands."+command+".permission").toArray(new String[0]);
-                    proxy.getPluginManager().registerCommand(instance, new SlashServerCommands(command,
+                    proxy.getPluginManager().registerCommand(instance, new RedirectCommand(command,
                             ConfigManager.getString("redirect server commands.commands."+command+".permission"),
                             ConfigManager.getString("redirect server commands.commands."+command+".server"),
                             ConfigManager.getString("redirect server commands.commands."+command+".message"),
@@ -70,6 +73,23 @@ public class Main extends Plugin {
                 else log(Level.WARNING, "There was some error with registering command \""+command+"\"! Canceling registration!");
             }
         }
+        if (ConfigManager.getBoolean("message commands.enabled") && ConfigManager.getKeys("message commands.commands").size() != 0){
+            for (String command : ConfigManager.getKeys("message commands.commands")){
+                Matcher match = Pattern.compile("\\[([a-zA-Z]+,)*[a-zA-Z]+]").matcher(command);
+                if (match.find()) {
+                    String[] aliases = command.replace("]", "").split("\\[")[1].split(",");
+                    command = command.split("\\[")[0];
+                    Main.getInstance().getProxy().getPluginManager().registerCommand(Main.getInstance(), new MessageCommand(command, aliases));
+                    Main.getInstance().getLogger().log(Level.INFO, "Command "+command+" with aliases "+ Arrays.toString(aliases) +" was successfully registered!");
+                }
+                else if (command.contains(" ")) Main.getInstance().getLogger().log(Level.WARNING, "Command "+command+" was not registered, because it contains space!");
+                else {
+                    Main.getInstance().getProxy().getPluginManager().registerCommand(Main.getInstance(), new MessageCommand(command));
+                    Main.getInstance().getLogger().log(Level.INFO, "Command "+command+" was successfully registered!");
+                }
+            }
+        }
+
 
         //LISTENERS
         if (ConfigManager.getBoolean("staff connect status.enabled")){
